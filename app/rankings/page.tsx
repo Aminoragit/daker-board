@@ -19,7 +19,8 @@ export default function RankingsPage() {
   const { globalRankings, initialized, init } = useLeaderboardStore();
   const [period, setPeriod] = useState('all');
 
-  useEffect(() => { init(); }, [init]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { init(); }, []);
 
   if (!initialized) return <LoadingState />;
 
