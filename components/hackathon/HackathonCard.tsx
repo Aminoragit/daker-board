@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 import { useTeamStore } from '@/store/teamStore';
 
 export default function HackathonCard({ hackathon }: { hackathon: Hackathon }) {
-  const teams = useTeamStore(s => s.getTeamsByHackathon(hackathon.slug));
+  const teams = useTeamStore(s => s.teams).filter(t => t.hackathonSlug === hackathon.slug);
 
   return (
     <Link href={`/hackathons/${hackathon.slug}`}>

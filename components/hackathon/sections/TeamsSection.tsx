@@ -7,7 +7,7 @@ import SectionTitle from '@/components/ui/SectionTitle';
 import { Users } from 'lucide-react';
 
 export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
-  const teams = useTeamStore(s => s.getTeamsByHackathon(detail.slug));
+  const teams = useTeamStore(s => s.teams).filter(t => t.hackathonSlug === detail.slug);
 
   return (
     <div>
