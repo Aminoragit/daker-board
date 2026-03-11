@@ -19,7 +19,7 @@ export default function RankingsPage() {
   const { globalRankings, initialized, init } = useLeaderboardStore();
   const [period, setPeriod] = useState('all');
 
-  useEffect(() => { init(); }, []);
+  useEffect(() => { init(); }, [init]);
 
   if (!initialized) return <LoadingState />;
 

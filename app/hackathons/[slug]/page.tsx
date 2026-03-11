@@ -55,6 +55,7 @@ export default function HackathonDetailPage() {
     teamStore.init();
     leaderboardStore.init();
     submissionStore.init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!hackathonStore.initialized) return <LoadingState />;

@@ -28,6 +28,7 @@ export default function HomePage() {
     teamStore.init();
     leaderboardStore.init();
     submissionStore.init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const ongoingCount = hackathonStore.hackathons.filter(h => h.status === 'ongoing').length;
