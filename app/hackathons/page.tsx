@@ -51,7 +51,7 @@ function HackathonsContent() {
     setActiveTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
   };
 
-  if (!initialized) return <LoadingState />;
+  if (!initialized || !teamStore.initialized) return <LoadingState />;
 
   return (
     <PageTransition>

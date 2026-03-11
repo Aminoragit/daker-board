@@ -49,7 +49,7 @@ function CampContent() {
     setSelectedRoles(prev => prev.includes(role) ? prev.filter(r => r !== role) : [...prev, role]);
   };
 
-  if (!teamStore.initialized) return <LoadingState />;
+  if (!teamStore.initialized || !hackathonStore.initialized) return <LoadingState />;
 
   return (
     <PageTransition>

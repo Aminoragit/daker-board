@@ -31,6 +31,10 @@ export default function HomePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (!hackathonStore.initialized) {
+    return null; // Or use a LoadingState component if preferred, but null prevents flash on home
+  }
+
   const ongoingCount = hackathonStore.hackathons.filter(h => h.status === 'ongoing').length;
 
   return (
