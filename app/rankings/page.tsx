@@ -1,27 +1,62 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useLeaderboardStore } from '@/store/leaderboardStore';
 import RankingTable from '@/components/rankings/RankingTable';
 import SectionTitle from '@/components/ui/SectionTitle';
 import LoadingState from '@/components/ui/LoadingState';
 import EmptyState from '@/components/ui/EmptyState';
+import ErrorState from '@/components/ui/ErrorState';
 import PageTransition from '@/components/layout/PageTransition';
 import { cn } from '@/lib/utils';
 
 const periods = [
-  { value: 'recent7', label: 'RECENT 7D' },
-  { value: 'recent30', label: 'RECENT 30D' },
-  { value: 'all', label: 'ALL TIME' },
+  { value: 'recent7', label: 'RECENT 7D', days: 7 },
+  { value: 'recent30', label: 'RECENT 30D', days: 30 },
+  { value: 'all', label: 'ALL TIME', days: 0 },
 ];
 
 export default function RankingsPage() {
-  const { globalRankings, initialized, init } = useLeaderboardStore();
+  const { globalRankings, leaderboards, initialized, init } = useLeaderboardStore();
   const [period, setPeriod] = useState('all');
+  const [error, setError] = useState(false);
 
+  useEffect(() => {
+    try {
+      init();
+    } catch {
+      setError(true);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { init(); }, []);
+  }, []);
 
+  const filteredRankings = useMemo(() => {
+    const selected = periods.find(p => p.value === period);
+    if (!selected || selected.days === 0) return globalRankings;
+
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - selected.days);
+
+    const recentTeamNames = new Set<string>();
+    leaderboards.forEach(lb => {
+      lb.entries.forEach(entry => {
+        if (new Date(entry.submittedAt) >= cutoff) {
+          recentTeamNames.add(entry.teamName);
+        }
+      });
+    });
+
+    if (recentTeamNames.size === 0) return [];
+
+    return globalRankings
+      .filter(r => {
+        const nick = r.nickname.toLowerCase();
+        return Array.from(recentTeamNames).some(tn => nick.includes(tn.toLowerCase().replace(/\s+/g, '_')));
+      })
+      .map((r, i) => ({ ...r, rank: i + 1 }));
+  }, [globalRankings, leaderboards, period]);
+
+  if (error) return <ErrorState message="FAILED TO LOAD RANKINGS" onRetry={() => { setError(false); init(); }} />;
   if (!initialized) return <LoadingState />;
 
   return (
@@ -47,10 +82,10 @@ export default function RankingsPage() {
         ))}
       </div>
 
-      {globalRankings.length === 0 ? (
-        <EmptyState message="NO RANKING DATA" />
+      {filteredRankings.length === 0 ? (
+        <EmptyState message={period === 'all' ? 'NO RANKING DATA' : `NO DATA FOR ${periods.find(p => p.value === period)?.label}`} />
       ) : (
-        <RankingTable rankings={globalRankings} />
+        <RankingTable rankings={filteredRankings} />
       )}
     </PageTransition>
   );

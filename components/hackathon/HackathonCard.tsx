@@ -27,9 +27,17 @@ export default function HackathonCard({ hackathon }: { hackathon: Hackathon }) {
         <h3 className="font-sans font-bold text-[--text-primary] mb-2 text-sm leading-snug">
           {hackathon.title}
         </h3>
-        <p className="font-mono text-xs text-[--text-secondary]">
-          DEADLINE: {formatDate(hackathon.period.submissionDeadlineAt)}
-        </p>
+        <div className="space-y-0.5 mb-2">
+          <p className="font-mono text-xs text-[--text-secondary]">
+            START: {formatDate(hackathon.period.startAt)}
+          </p>
+          <p className="font-mono text-xs text-[--text-secondary]">
+            END: {formatDate(hackathon.period.endAt)}
+          </p>
+          <p className="font-mono text-xs text-[--text-muted]">
+            DEADLINE: {formatDate(hackathon.period.submissionDeadlineAt)}
+          </p>
+        </div>
         <div className="mt-3 pt-3 border-t border-[--border]/40 flex items-center justify-between">
           <span className="font-mono text-xs text-[--text-muted]">
             {teams.length} TEAM{teams.length !== 1 ? 'S' : ''}

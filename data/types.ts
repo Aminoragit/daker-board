@@ -8,6 +8,7 @@ export interface Hackathon {
   thumbnailUrl: string;
   period: {
     timezone: string;
+    startAt: string;
     submissionDeadlineAt: string;
     endAt: string;
   };
@@ -99,6 +100,18 @@ export interface Submission {
   artifactType: string;
   content: string;
   notes?: string;
+  fileName?: string;
+  fileSize?: number;
+}
+
+export interface TeamInvitation {
+  id: string;
+  teamCode: string;
+  hackathonSlug: string;
+  fromTeamName: string;
+  toNickname: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  createdAt: string;
 }
 
 export interface GlobalRankingEntry {

@@ -8,6 +8,7 @@ interface TeamStore {
   init: () => void;
   getTeamsByHackathon: (slug: string) => Team[];
   addTeam: (team: Team) => void;
+  updateTeam: (teamCode: string, updates: Partial<Team>) => void;
   getAllTeams: () => Team[];
 }
 
@@ -35,6 +36,14 @@ export const useTeamStore = create<TeamStore>((set, get) => ({
 
   addTeam: (team) => {
     const updated = [...get().teams, team];
+    set({ teams: updated });
+    try { localStorage.setItem('daker_teams', JSON.stringify(updated)); } catch {}
+  },
+
+  updateTeam: (teamCode, updates) => {
+    const updated = get().teams.map(t =>
+      t.teamCode === teamCode ? { ...t, ...updates } : t
+    );
     set({ teams: updated });
     try { localStorage.setItem('daker_teams', JSON.stringify(updated)); } catch {}
   },

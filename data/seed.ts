@@ -9,6 +9,7 @@ export const SEED_HACKATHONS: Hackathon[] = [
     thumbnailUrl: "https://example.com/public/img/aimers8.png",
     period: {
       timezone: "Asia/Seoul",
+      startAt: "2026-02-10T10:00:00+09:00",
       submissionDeadlineAt: "2026-02-25T10:00:00+09:00",
       endAt: "2026-02-26T10:00:00+09:00"
     },
@@ -26,6 +27,7 @@ export const SEED_HACKATHONS: Hackathon[] = [
     thumbnailUrl: "https://example.com/public/img/vibe202602.png",
     period: {
       timezone: "Asia/Seoul",
+      startAt: "2026-02-10T10:00:00+09:00",
       submissionDeadlineAt: "2026-03-03T10:00:00+09:00",
       endAt: "2026-03-09T10:00:00+09:00"
     },
@@ -43,6 +45,7 @@ export const SEED_HACKATHONS: Hackathon[] = [
     thumbnailUrl: "https://example.com/public/img/daker-handover-202603.png",
     period: {
       timezone: "Asia/Seoul",
+      startAt: "2026-03-04T10:00:00+09:00",
       submissionDeadlineAt: "2026-03-30T10:00:00+09:00",
       endAt: "2026-04-27T10:00:00+09:00"
     },

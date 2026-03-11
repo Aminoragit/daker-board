@@ -1,9 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import type { HackathonDetail } from '@/data/types';
 import { useSubmissionStore } from '@/store/submissionStore';
 import SectionTitle from '@/components/ui/SectionTitle';
+import { Upload, X, FileIcon } from 'lucide-react';
+
+const FILE_TYPES: Record<string, string> = {
+  zip: '.zip',
+  pdf: '.pdf',
+  csv: '.csv',
+};
 
 export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
   const { submit } = detail.sections;
@@ -13,6 +20,48 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
   const [notes, setNotes] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [itemInputs, setItemInputs] = useState<Record<string, string>>({});
+  const [fileData, setFileData] = useState<{ name: string; size: number; base64: string } | null>(null);
+  const [itemFiles, setItemFiles] = useState<Record<string, { name: string; size: number; base64: string }>>({});
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const itemFileRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  const fileArtifactTypes = submit.allowedArtifactTypes.filter(t => FILE_TYPES[t]);
+  const hasFileUpload = fileArtifactTypes.length > 0;
+  const acceptStr = fileArtifactTypes.map(t => FILE_TYPES[t]).join(',');
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, itemKey?: string) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = { name: file.name, size: file.size, base64: reader.result as string };
+      if (itemKey) {
+        setItemFiles(prev => ({ ...prev, [itemKey]: result }));
+      } else {
+        setFileData(result);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearFile = (itemKey?: string) => {
+    if (itemKey) {
+      setItemFiles(prev => {
+        const next = { ...prev };
+        delete next[itemKey];
+        return next;
+      });
+      if (itemFileRefs.current[itemKey]) itemFileRefs.current[itemKey]!.value = '';
+    } else {
+      setFileData(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const isFileFormat = (format: string) => {
+    return format === 'pdf' || format === 'zip' || format === 'csv' || format.includes('pdf');
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,15 +69,30 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
 
     if (submit.submissionItems) {
       submit.submissionItems.forEach(item => {
+        const file = itemFiles[item.key];
         addSubmission({
           id: `${Date.now()}-${item.key}`,
           hackathonSlug: detail.slug,
           teamName: teamName.trim(),
           submittedAt: new Date().toISOString(),
           artifactType: item.format,
-          content: itemInputs[item.key] || '',
+          content: file ? file.name : (itemInputs[item.key] || ''),
           notes: notes || undefined,
+          fileName: file?.name,
+          fileSize: file?.size,
         });
+      });
+    } else if (hasFileUpload && fileData) {
+      addSubmission({
+        id: String(Date.now()),
+        hackathonSlug: detail.slug,
+        teamName: teamName.trim(),
+        submittedAt: new Date().toISOString(),
+        artifactType: fileArtifactTypes[0],
+        content: fileData.name,
+        notes: notes || undefined,
+        fileName: fileData.name,
+        fileSize: fileData.size,
       });
     } else {
       addSubmission({
@@ -47,7 +111,16 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
     setContent('');
     setNotes('');
     setItemInputs({});
+    setFileData(null);
+    setItemFiles({});
+    if (fileInputRef.current) fileInputRef.current.value = '';
     setTimeout(() => setSubmitted(false), 3000);
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   return (
@@ -99,20 +172,90 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
                 <label className="font-mono text-xs text-[--text-secondary] block mb-1">
                   {item.title} ({item.format})
                 </label>
-                <input
-                  type={item.format.includes('url') ? 'url' : 'text'}
-                  value={itemInputs[item.key] || ''}
-                  onChange={e => setItemInputs(prev => ({ ...prev, [item.key]: e.target.value }))}
-                  className="w-full bg-[--bg-base] border border-[--border] rounded px-3 py-2 text-sm text-[--text-primary] font-sans focus:border-[--accent] focus:outline-none transition-colors"
-                  placeholder={item.format.includes('url') ? 'https://...' : '내용 입력'}
-                />
+                {isFileFormat(item.format) ? (
+                  <div>
+                    <input
+                      ref={el => { itemFileRefs.current[item.key] = el; }}
+                      type="file"
+                      accept={item.format === 'pdf' || item.format === 'pdf_url' ? '.pdf' : FILE_TYPES[item.format] || '*'}
+                      onChange={e => handleFileSelect(e, item.key)}
+                      className="hidden"
+                      id={`file-${item.key}`}
+                    />
+                    {itemFiles[item.key] ? (
+                      <div className="flex items-center gap-2 bg-[--bg-base] border border-[--border] rounded px-3 py-2">
+                        <FileIcon size={14} className="text-[--accent] shrink-0" />
+                        <span className="text-sm text-[--text-primary] font-sans truncate flex-1">{itemFiles[item.key].name}</span>
+                        <span className="font-mono text-xs text-[--text-muted] shrink-0">{formatFileSize(itemFiles[item.key].size)}</span>
+                        <button type="button" onClick={() => clearFile(item.key)} className="text-[--text-muted] hover:text-red-400 transition-colors shrink-0">
+                          <X size={14} />
+                        </button>
+                      </div>
+                    ) : (
+                      <label
+                        htmlFor={`file-${item.key}`}
+                        className="flex items-center gap-2 bg-[--bg-base] border border-dashed border-[--border] rounded px-3 py-3 cursor-pointer hover:border-[--accent] transition-colors"
+                      >
+                        <Upload size={14} className="text-[--text-muted]" />
+                        <span className="font-mono text-xs text-[--text-muted]">파일 선택 (또는 아래 URL 입력)</span>
+                      </label>
+                    )}
+                    <input
+                      type={item.format.includes('url') ? 'url' : 'text'}
+                      value={itemInputs[item.key] || ''}
+                      onChange={e => setItemInputs(prev => ({ ...prev, [item.key]: e.target.value }))}
+                      className="w-full bg-[--bg-base] border border-[--border] rounded px-3 py-2 text-sm text-[--text-primary] font-sans focus:border-[--accent] focus:outline-none transition-colors mt-2"
+                      placeholder={item.format.includes('url') ? 'https://...' : '또는 URL/내용 입력'}
+                    />
+                  </div>
+                ) : (
+                  <input
+                    type={item.format.includes('url') ? 'url' : 'text'}
+                    value={itemInputs[item.key] || ''}
+                    onChange={e => setItemInputs(prev => ({ ...prev, [item.key]: e.target.value }))}
+                    className="w-full bg-[--bg-base] border border-[--border] rounded px-3 py-2 text-sm text-[--text-primary] font-sans focus:border-[--accent] focus:outline-none transition-colors"
+                    placeholder={item.format.includes('url') ? 'https://...' : '내용 입력'}
+                  />
+                )}
               </div>
             ))
+          ) : hasFileUpload ? (
+            <div>
+              <label className="font-mono text-xs text-[--text-secondary] block mb-1">
+                FILE UPLOAD ({fileArtifactTypes.join(', ').toUpperCase()})
+              </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept={acceptStr}
+                onChange={e => handleFileSelect(e)}
+                className="hidden"
+                id="file-upload-main"
+              />
+              {fileData ? (
+                <div className="flex items-center gap-2 bg-[--bg-base] border border-[--border] rounded px-3 py-2">
+                  <FileIcon size={14} className="text-[--accent] shrink-0" />
+                  <span className="text-sm text-[--text-primary] font-sans truncate flex-1">{fileData.name}</span>
+                  <span className="font-mono text-xs text-[--text-muted] shrink-0">{formatFileSize(fileData.size)}</span>
+                  <button type="button" onClick={() => clearFile()} className="text-[--text-muted] hover:text-red-400 transition-colors shrink-0">
+                    <X size={14} />
+                  </button>
+                </div>
+              ) : (
+                <label
+                  htmlFor="file-upload-main"
+                  className="flex flex-col items-center gap-2 bg-[--bg-base] border border-dashed border-[--border] rounded px-3 py-6 cursor-pointer hover:border-[--accent] transition-colors"
+                >
+                  <Upload size={20} className="text-[--text-muted]" />
+                  <span className="font-mono text-xs text-[--text-muted]">클릭하여 파일 선택</span>
+                  <span className="font-mono text-xs text-[--text-muted]">({fileArtifactTypes.join(', ').toUpperCase()} 형식)</span>
+                </label>
+              )}
+            </div>
           ) : (
             <div>
               <label className="font-mono text-xs text-[--text-secondary] block mb-1">
-                {submit.allowedArtifactTypes.includes('zip') ? 'FILE NAME' :
-                 submit.allowedArtifactTypes.includes('url') ? 'URL' : 'CONTENT'}
+                {submit.allowedArtifactTypes.includes('url') ? 'URL' : 'CONTENT'}
               </label>
               {submit.allowedArtifactTypes.includes('text') ? (
                 <textarea
@@ -128,7 +271,7 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
                   value={content}
                   onChange={e => setContent(e.target.value)}
                   className="w-full bg-[--bg-base] border border-[--border] rounded px-3 py-2 text-sm text-[--text-primary] font-sans focus:border-[--accent] focus:outline-none transition-colors"
-                  placeholder={submit.allowedArtifactTypes.includes('url') ? 'https://...' : '파일명 입력'}
+                  placeholder={submit.allowedArtifactTypes.includes('url') ? 'https://...' : '내용 입력'}
                 />
               )}
             </div>
