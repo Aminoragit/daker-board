@@ -10,6 +10,7 @@ import HackathonFilter from '@/components/hackathon/HackathonFilter';
 import SectionTitle from '@/components/ui/SectionTitle';
 import EmptyState from '@/components/ui/EmptyState';
 import LoadingState from '@/components/ui/LoadingState';
+import ErrorState from '@/components/ui/ErrorState';
 import PageTransition from '@/components/layout/PageTransition';
 
 function HackathonsContent() {
@@ -19,13 +20,18 @@ function HackathonsContent() {
 
   const [activeStatus, setActiveStatus] = useState<HackathonStatus | 'all'>('all');
   const [activeTags, setActiveTags] = useState<string[]>([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    init();
-    teamStore.init();
-    const status = searchParams.get('status');
-    if (status && ['ongoing', 'upcoming', 'ended'].includes(status)) {
-      setActiveStatus(status as HackathonStatus);
+    try {
+      init();
+      teamStore.init();
+      const status = searchParams.get('status');
+      if (status && ['ongoing', 'upcoming', 'ended'].includes(status)) {
+        setActiveStatus(status as HackathonStatus);
+      }
+    } catch {
+      setError(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -51,6 +57,7 @@ function HackathonsContent() {
     setActiveTags(prev => prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]);
   };
 
+  if (error) return <ErrorState message="FAILED TO LOAD EVENTS" onRetry={() => { setError(false); init(); teamStore.init(); }} />;
   if (!initialized || !teamStore.initialized) return <LoadingState />;
 
   return (

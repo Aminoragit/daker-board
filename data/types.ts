@@ -114,6 +114,17 @@ export interface TeamInvitation {
   createdAt: string;
 }
 
+export interface TeamMessage {
+  id: string;
+  fromNickname: string;
+  toTeamCode: string;
+  toTeamName: string;
+  hackathonSlug: string | null;
+  content: string;
+  createdAt: string;
+  read: boolean;
+}
+
 export interface GlobalRankingEntry {
   rank: number;
   nickname: string;

@@ -11,6 +11,7 @@ import CampFilter from '@/components/camp/CampFilter';
 import SectionTitle from '@/components/ui/SectionTitle';
 import EmptyState from '@/components/ui/EmptyState';
 import LoadingState from '@/components/ui/LoadingState';
+import ErrorState from '@/components/ui/ErrorState';
 import PageTransition from '@/components/layout/PageTransition';
 
 function CampContent() {
@@ -22,12 +23,17 @@ function CampContent() {
   const [openOnly, setOpenOnly] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    teamStore.init();
-    hackathonStore.init();
-    const h = searchParams.get('hackathon');
-    if (h) setSelectedHackathon(h);
+    try {
+      teamStore.init();
+      hackathonStore.init();
+      const h = searchParams.get('hackathon');
+      if (h) setSelectedHackathon(h);
+    } catch {
+      setError(true);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -49,6 +55,7 @@ function CampContent() {
     setSelectedRoles(prev => prev.includes(role) ? prev.filter(r => r !== role) : [...prev, role]);
   };
 
+  if (error) return <ErrorState message="FAILED TO LOAD TEAMS" onRetry={() => { setError(false); teamStore.init(); hackathonStore.init(); }} />;
   if (!teamStore.initialized || !hackathonStore.initialized) return <LoadingState />;
 
   return (

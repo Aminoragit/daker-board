@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Trophy, Users, BarChart2 } from 'lucide-react';
 import { useHackathonStore } from '@/store/hackathonStore';
@@ -9,6 +9,8 @@ import { useLeaderboardStore } from '@/store/leaderboardStore';
 import { useSubmissionStore } from '@/store/submissionStore';
 import HackathonCard from '@/components/hackathon/HackathonCard';
 import SectionTitle from '@/components/ui/SectionTitle';
+import LoadingState from '@/components/ui/LoadingState';
+import ErrorState from '@/components/ui/ErrorState';
 import PageTransition from '@/components/layout/PageTransition';
 
 const ctaCards = [
@@ -22,18 +24,31 @@ export default function HomePage() {
   const teamStore = useTeamStore();
   const leaderboardStore = useLeaderboardStore();
   const submissionStore = useSubmissionStore();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    hackathonStore.init();
-    teamStore.init();
-    leaderboardStore.init();
-    submissionStore.init();
+    try {
+      hackathonStore.init();
+      teamStore.init();
+      leaderboardStore.init();
+      submissionStore.init();
+    } catch {
+      setError(true);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!hackathonStore.initialized) {
-    return null; // Or use a LoadingState component if preferred, but null prevents flash on home
+  if (error) {
+    return <ErrorState message="FAILED TO INITIALIZE" onRetry={() => {
+      setError(false);
+      hackathonStore.init();
+      teamStore.init();
+      leaderboardStore.init();
+      submissionStore.init();
+    }} />;
   }
+
+  if (!hackathonStore.initialized) return <LoadingState />;
 
   const ongoingCount = hackathonStore.hackathons.filter(h => h.status === 'ongoing').length;
 

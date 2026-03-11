@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import MessageInbox from '@/components/layout/MessageInbox';
 
 const navLinks = [
   { href: '/hackathons', label: 'HACKATHONS' },
@@ -45,15 +46,19 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <MessageInbox />
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="sm:hidden text-[--text-secondary] hover:text-[--text-primary]"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        {/* Mobile right */}
+        <div className="flex sm:hidden items-center gap-3">
+          <MessageInbox />
+          <button
+            className="text-[--text-secondary] hover:text-[--text-primary]"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

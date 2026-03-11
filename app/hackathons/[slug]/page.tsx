@@ -12,6 +12,7 @@ import { getTimeUntil } from '@/lib/utils';
 import StatusBadge from '@/components/ui/StatusBadge';
 import TagBadge from '@/components/ui/TagBadge';
 import LoadingState from '@/components/ui/LoadingState';
+import ErrorState from '@/components/ui/ErrorState';
 import DetailTabs from '@/components/hackathon/DetailTabs';
 import OverviewSection from '@/components/hackathon/sections/OverviewSection';
 import EvalSection from '@/components/hackathon/sections/EvalSection';
@@ -49,15 +50,21 @@ export default function HackathonDetailPage() {
   const leaderboardStore = useLeaderboardStore();
   const submissionStore = useSubmissionStore();
   const [activeTab, setActiveTab] = useState('overview');
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    hackathonStore.init();
-    teamStore.init();
-    leaderboardStore.init();
-    submissionStore.init();
+    try {
+      hackathonStore.init();
+      teamStore.init();
+      leaderboardStore.init();
+      submissionStore.init();
+    } catch {
+      setError(true);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (error) return <ErrorState message="FAILED TO LOAD EVENT" onRetry={() => { setError(false); hackathonStore.init(); teamStore.init(); leaderboardStore.init(); submissionStore.init(); }} />;
   if (!hackathonStore.initialized) return <LoadingState />;
 
   const detail = hackathonStore.getHackathon(slug);

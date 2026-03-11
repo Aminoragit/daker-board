@@ -6,7 +6,8 @@ import { useHackathonStore } from '@/store/hackathonStore';
 import { useTeamStore } from '@/store/teamStore';
 import TagBadge from '@/components/ui/TagBadge';
 import Modal from '@/components/ui/Modal';
-import { ExternalLink, Edit2, ToggleLeft, ToggleRight } from 'lucide-react';
+import MessageModal from '@/components/camp/MessageModal';
+import { ExternalLink, Edit2, ToggleLeft, ToggleRight, MessageSquare } from 'lucide-react';
 
 const roleOptions = ['Backend', 'Frontend', 'Designer', 'ML Engineer', 'PM', 'Other'];
 
@@ -14,6 +15,7 @@ export default function TeamCard({ team }: { team: Team }) {
   const hackathonMeta = useHackathonStore(s => team.hackathonSlug ? s.getHackathonMeta(team.hackathonSlug) : undefined);
   const updateTeam = useTeamStore(s => s.updateTeam);
 
+  const [msgOpen, setMsgOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [editName, setEditName] = useState(team.name);
   const [editIntro, setEditIntro] = useState(team.intro);
@@ -86,7 +88,7 @@ export default function TeamCard({ team }: { team: Team }) {
           </div>
         )}
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <a
             href={team.contact.url}
             target="_blank"
@@ -96,6 +98,13 @@ export default function TeamCard({ team }: { team: Team }) {
             <ExternalLink size={12} />
             CONTACT
           </a>
+          <button
+            onClick={() => setMsgOpen(true)}
+            className="inline-flex items-center gap-1.5 border border-[--border] text-[--text-secondary] hover:border-[--accent] hover:text-[--accent] font-mono text-xs px-3 py-1.5 rounded transition-all"
+          >
+            <MessageSquare size={12} />
+            MESSAGE
+          </button>
           <button
             onClick={() => setEditOpen(true)}
             className="inline-flex items-center gap-1.5 border border-[--border] text-[--text-secondary] hover:border-[--accent] hover:text-[--accent] font-mono text-xs px-3 py-1.5 rounded transition-all"
@@ -116,6 +125,8 @@ export default function TeamCard({ team }: { team: Team }) {
           </button>
         </div>
       </div>
+
+      <MessageModal isOpen={msgOpen} onClose={() => setMsgOpen(false)} team={team} />
 
       <Modal isOpen={editOpen} onClose={() => setEditOpen(false)} title="EDIT TEAM">
         <form onSubmit={handleEdit} className="space-y-4">
