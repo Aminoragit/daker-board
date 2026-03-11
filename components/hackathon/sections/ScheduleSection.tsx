@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import type { HackathonDetail } from '@/data/types';
 import { formatDate } from '@/lib/utils';
 import { Check, Circle } from 'lucide-react';
@@ -7,7 +8,20 @@ import SectionTitle from '@/components/ui/SectionTitle';
 
 export default function ScheduleSection({ detail }: { detail: HackathonDetail }) {
   const { schedule } = detail.sections;
-  const now = new Date();
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setNow(new Date());
+  }, []);
+
+  if (!now) {
+    return (
+      <div>
+        <SectionTitle>SCHEDULE</SectionTitle>
+        <p className="font-mono text-xs text-[--text-muted]">LOADING...</p>
+      </div>
+    );
+  }
 
   return (
     <div>

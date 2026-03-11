@@ -56,6 +56,60 @@ export const SEED_HACKATHONS: Hackathon[] = [
 
 export const SEED_HACKATHON_DETAILS: HackathonDetail[] = [
   {
+    slug: "monthly-vibe-coding-2026-02",
+    title: "월간 해커톤 : 바이브 코딩 개선 AI 아이디어 공모전 (2026.02)",
+    sections: {
+      overview: {
+        summary: "AI 기반 바이브 코딩 워크플로우를 개선하는 아이디어를 제안하고 프로토타입을 구현하는 해커톤입니다.",
+        teamPolicy: { allowSolo: true, maxTeamSize: 3 }
+      },
+      info: {
+        notice: [
+          "아이디어 제안서와 프로토타입을 함께 제출해야 합니다.",
+          "프로토타입은 데모 가능한 수준이면 충분합니다."
+        ],
+        links: {
+          rules: "https://example.com/public/rules/vibe202602",
+          faq: "https://example.com/public/faq/vibe202602"
+        }
+      },
+      eval: {
+        metricName: "FinalScore",
+        description: "아이디어 독창성, 실현 가능성, 프로토타입 완성도를 종합 평가합니다.",
+        scoreSource: "vote",
+        scoreDisplay: {
+          label: "평가 점수",
+          breakdown: [
+            { key: "creativity", label: "독창성", weightPercent: 40 },
+            { key: "feasibility", label: "실현 가능성", weightPercent: 30 },
+            { key: "prototype", label: "프로토타입", weightPercent: 30 }
+          ]
+        }
+      },
+      schedule: {
+        timezone: "Asia/Seoul",
+        milestones: [
+          { name: "아이디어 제출 시작", at: "2026-02-10T10:00:00+09:00" },
+          { name: "제출 마감", at: "2026-03-03T10:00:00+09:00" },
+          { name: "결과 발표", at: "2026-03-09T10:00:00+09:00" }
+        ]
+      },
+      teams: { campEnabled: true, listUrl: "/camp?hackathon=monthly-vibe-coding-2026-02" },
+      submit: {
+        allowedArtifactTypes: ["text", "url"],
+        submissionUrl: "/hackathons/monthly-vibe-coding-2026-02#submit",
+        guide: [
+          "아이디어 제안서를 텍스트로 작성합니다.",
+          "프로토타입 URL을 함께 제출합니다."
+        ]
+      },
+      leaderboard: {
+        publicLeaderboardUrl: "/hackathons/monthly-vibe-coding-2026-02#leaderboard",
+        note: "투표 결과 기반으로 리더보드가 업데이트됩니다."
+      }
+    }
+  },
+  {
     slug: "aimers-8-model-lite",
     title: "Aimers 8기 : 모델 경량화 온라인 해커톤",
     sections: {
