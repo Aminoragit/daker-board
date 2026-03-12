@@ -6,7 +6,7 @@ import type { HackathonDetail, TeamInvitation } from '@/data/types';
 import { useTeamStore } from '@/store/teamStore';
 import SectionTitle from '@/components/ui/SectionTitle';
 import Modal from '@/components/ui/Modal';
-import { Users, UserPlus, Check, XIcon, AlertTriangle } from 'lucide-react';
+import { Users, UserPlus, AlertTriangle } from 'lucide-react';
 
 function useInvitationStore() {
   const key = 'daker_invitations';
@@ -66,8 +66,6 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
       inv.id === invId ? { ...inv, status: action } : inv
     ));
   };
-
-  const pendingInvitations = invitations.filter(inv => inv.status === 'pending');
 
   return (
     <div>
