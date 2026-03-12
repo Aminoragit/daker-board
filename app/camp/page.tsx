@@ -60,19 +60,19 @@ function CampContent() {
 
   return (
     <PageTransition>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
         <div className="flex items-center gap-3">
           <SectionTitle>TEAM CAMP</SectionTitle>
-          <span className="font-mono text-xs text-[--accent] bg-[--accent]/10 px-2 py-0.5 rounded-sm">
-            {filtered.length}
+          <span className="font-mono text-xs text-[--text-primary] bg-[--accent] px-2 py-0.5 rounded-sm shadow-neon-amber font-bold">
+            TOTAL: {filtered.length}
           </span>
         </div>
         <button
           onClick={() => setModalOpen(true)}
-          className="flex items-center gap-1.5 bg-[--accent] text-black font-mono font-bold text-xs px-4 py-2 rounded hover:brightness-110 transition-all"
+          className="flex items-center gap-1.5 bg-[--accent] text-black font-mono font-bold text-xs px-4 py-2.5 rounded-sm hover:brightness-110 hover:shadow-neon-amber transition-all uppercase tracking-widest tech-border"
         >
-          <Plus size={14} />
-          CREATE TEAM
+          <Plus size={16} />
+          + CREATE TEAM
         </button>
       </div>
 
@@ -87,9 +87,9 @@ function CampContent() {
       />
 
       {filtered.length === 0 ? (
-        <EmptyState message="NO TEAMS FOUND" />
+        <EmptyState message="NO MATCHING TEAMS FOUND IN DATABASE" />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map(team => (
             <TeamCard key={team.teamCode} team={team} />
           ))}

@@ -1,3 +1,13 @@
+/**
+ * Seed data derived from source JSON files:
+ *   - public_hackathons.json     → SEED_HACKATHONS
+ *   - public_hackathon_detail.json → SEED_HACKATHON_DETAILS
+ *   - public_leaderboard.json    → SEED_LEADERBOARDS
+ *   - public_teams.json          → SEED_TEAMS
+ *
+ * On first load, this data is seeded into localStorage.
+ * All subsequent CRUD operations are completed within the browser (localStorage).
+ */
 import type { Hackathon, HackathonDetail, Leaderboard, Team, GlobalRankingEntry } from './types';
 
 export const SEED_HACKATHONS: Hackathon[] = [

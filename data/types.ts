@@ -22,6 +22,7 @@ export interface Hackathon {
 export interface HackathonDetail {
   slug: string;
   title: string;
+  extraDetails?: Record<string, unknown>[];
   sections: {
     overview: {
       summary: string;

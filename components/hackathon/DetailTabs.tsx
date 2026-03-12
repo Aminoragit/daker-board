@@ -19,14 +19,14 @@ interface DetailTabsProps {
 
 export default function DetailTabs({ activeTab, onTabChange }: DetailTabsProps) {
   return (
-    <div className="border-b border-[--border] mb-6 overflow-x-auto">
+    <div className="border-b border-[--border] mb-8 overflow-x-auto">
       <div className="flex gap-0 min-w-max">
         {tabs.map(tab => (
           <button
             key={tab.key}
             onClick={() => onTabChange(tab.key)}
             className={cn(
-              'font-mono text-xs uppercase tracking-wider px-4 py-3 transition-all relative',
+              'font-mono text-xs uppercase tracking-widest px-4 py-3 transition-all relative',
               activeTab === tab.key
                 ? 'text-[--accent]'
                 : 'text-[--text-secondary] hover:text-[--text-primary]'
@@ -34,7 +34,7 @@ export default function DetailTabs({ activeTab, onTabChange }: DetailTabsProps) 
           >
             {tab.label}
             {activeTab === tab.key && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[--accent]" />
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[--accent] shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
             )}
           </button>
         ))}

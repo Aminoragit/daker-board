@@ -1,7 +1,7 @@
 'use client';
 
 import type { HackathonDetail } from '@/data/types';
-import { Users, User } from 'lucide-react';
+import { Users, User, ExternalLink } from 'lucide-react';
 import SectionTitle from '@/components/ui/SectionTitle';
 
 export default function OverviewSection({ detail }: { detail: HackathonDetail }) {
@@ -40,6 +40,25 @@ export default function OverviewSection({ detail }: { detail: HackathonDetail })
               <span className="font-sans">{n}</span>
             </div>
           ))}
+        </div>
+      )}
+
+      {(info.links.rules || info.links.faq) && (
+        <div className="flex gap-2">
+          {info.links.rules && (
+            <a href={info.links.rules} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 border border-[--border] text-[--text-secondary] hover:border-[--accent] hover:text-[--accent] font-mono text-xs px-3 py-1.5 rounded transition-all">
+              <ExternalLink size={12} />
+              RULES
+            </a>
+          )}
+          {info.links.faq && (
+            <a href={info.links.faq} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 border border-[--border] text-[--text-secondary] hover:border-[--accent] hover:text-[--accent] font-mono text-xs px-3 py-1.5 rounded transition-all">
+              <ExternalLink size={12} />
+              FAQ
+            </a>
+          )}
         </div>
       )}
     </div>

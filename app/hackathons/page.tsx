@@ -64,8 +64,8 @@ function HackathonsContent() {
     <PageTransition>
       <div className="flex items-center gap-3 mb-6">
         <SectionTitle>HACKATHON EVENTS</SectionTitle>
-        <span className="font-mono text-xs text-[--accent] bg-[--accent]/10 px-2 py-0.5 rounded-sm">
-          {filtered.length}
+        <span className="font-mono text-xs text-[--text-primary] bg-[--accent] px-2 py-0.5 rounded-sm shadow-neon-amber font-bold">
+          TOTAL: {filtered.length}
         </span>
       </div>
 
@@ -78,9 +78,9 @@ function HackathonsContent() {
       />
 
       {filtered.length === 0 ? (
-        <EmptyState message="NO EVENTS FOUND" />
+        <EmptyState message="NO EVENTS MATCHING QUERY" />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map(h => (
             <HackathonCard key={h.slug} hackathon={h} />
           ))}

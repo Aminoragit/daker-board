@@ -65,25 +65,32 @@ export default function RankingsPage() {
         <SectionTitle>GLOBAL RANKINGS</SectionTitle>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-6">
-        {periods.map(p => (
-          <button
-            key={p.value}
-            onClick={() => setPeriod(p.value)}
-            className={cn(
-              'font-mono text-xs uppercase tracking-wider px-3 py-1.5 rounded-sm border transition-all',
-              period === p.value
-                ? 'border-[--accent] text-[--accent] bg-[--accent]/10'
-                : 'border-[--border] text-[--text-secondary] hover:border-[--text-secondary]'
-            )}
-          >
-            {p.label}
-          </button>
-        ))}
+      <div className="flex flex-col gap-2 mb-8 bg-[#000]/30 p-4 border border-[--border] tech-border">
+        <span className="font-mono text-[10px] text-[--text-muted] uppercase tracking-widest flex items-center gap-2">
+          <span className="text-[--purple]">&gt;</span> TEMPORAL_FILTER:
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {periods.map(p => (
+            <button
+              key={p.value}
+              onClick={() => setPeriod(p.value)}
+              className={cn(
+                'font-mono text-[11px] uppercase tracking-wider px-4 py-2 rounded-sm border transition-all',
+                period === p.value
+                  ? 'border-[--purple] text-[--purple] bg-[--purple]/10 shadow-[inset_0_0_8px_rgba(168,85,247,0.3)] text-glow'
+                  : 'border-[--border] text-[--text-secondary] hover:border-[--text-primary] hover:text-[--text-primary]'
+              )}
+            >
+              <span className={cn("opacity-50 mr-1", period === p.value && "text-[--purple] opacity-100")}>[</span>
+              {p.label}
+              <span className={cn("opacity-50 ml-1", period === p.value && "text-[--purple] opacity-100")}>]</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {filteredRankings.length === 0 ? (
-        <EmptyState message={period === 'all' ? 'NO RANKING DATA' : `NO DATA FOR ${periods.find(p => p.value === period)?.label}`} />
+        <EmptyState message={period === 'all' ? 'NO RANKING DATA FOUND IN MATRIX' : `NO DATA FOR TIME PERIOD: ${periods.find(p => p.value === period)?.label}`} />
       ) : (
         <RankingTable rankings={filteredRankings} />
       )}

@@ -3,7 +3,9 @@ export function cn(...classes: (string | boolean | undefined | null)[]): string 
 }
 
 export function formatDate(isoString: string): string {
+  if (!isoString) return '-';
   const d = new Date(isoString);
+  if (isNaN(d.getTime())) return '-';
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');

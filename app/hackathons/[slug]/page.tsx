@@ -23,7 +23,7 @@ import SubmitSection from '@/components/hackathon/sections/SubmitSection';
 import LeaderboardSection from '@/components/hackathon/sections/LeaderboardSection';
 import PageTransition from '@/components/layout/PageTransition';
 
-function CountdownDisplay({ deadline }: { deadline: string }) {
+function CountdownDisplay({ deadline, status }: { deadline: string; status: string }) {
   const [time, setTime] = useState(getTimeUntil(deadline));
 
   useEffect(() => {
@@ -32,7 +32,10 @@ function CountdownDisplay({ deadline }: { deadline: string }) {
   }, [deadline]);
 
   if (time.isPast) {
-    return <span className="font-mono text-sm text-red-400 font-bold">CLOSED</span>;
+    if (status === 'ongoing') {
+      return <span className="font-mono text-sm text-yellow-400 font-bold">SUBMISSION CLOSED — 평가 진행중</span>;
+    }
+    return <span className="font-mono text-sm text-red-400 font-bold">ENDED</span>;
   }
 
   return (
@@ -112,7 +115,7 @@ export default function HackathonDetailPage() {
           {detail.title}
         </h1>
 
-        <CountdownDisplay deadline={meta.period.submissionDeadlineAt} />
+        <CountdownDisplay deadline={meta.period.submissionDeadlineAt} status={meta.status} />
 
         <div className="flex gap-2 pt-2">
           <a href={meta.links.rules} target="_blank" rel="noopener noreferrer"

@@ -18,7 +18,6 @@ export default function TeamCreateModal({ isOpen, onClose, hackathons }: TeamCre
   const [name, setName] = useState('');
   const [intro, setIntro] = useState('');
   const [hackathonSlug, setHackathonSlug] = useState('');
-  const [isOpen_, setIsOpen] = useState(true);
   const [lookingFor, setLookingFor] = useState<string[]>([]);
   const [contactUrl, setContactUrl] = useState('');
   const [memberCount, setMemberCount] = useState(1);
@@ -41,7 +40,7 @@ export default function TeamCreateModal({ isOpen, onClose, hackathons }: TeamCre
       teamCode: `T-${Date.now().toString(36).toUpperCase()}`,
       hackathonSlug: hackathonSlug || null,
       name: name.trim(),
-      isOpen: isOpen_,
+      isOpen: true,
       memberCount,
       lookingFor,
       intro: intro.trim(),
@@ -52,7 +51,6 @@ export default function TeamCreateModal({ isOpen, onClose, hackathons }: TeamCre
     setName('');
     setIntro('');
     setHackathonSlug('');
-    setIsOpen(true);
     setLookingFor([]);
     setContactUrl('');
     setMemberCount(1);
@@ -77,29 +75,36 @@ export default function TeamCreateModal({ isOpen, onClose, hackathons }: TeamCre
         </div>
 
         <div>
-          <label className="font-mono text-xs text-[--text-secondary] block mb-1">INTRO *</label>
-          <textarea value={intro} onChange={e => setIntro(e.target.value)} required rows={3}
-            className="w-full bg-[--bg-base] border border-[--border] rounded px-3 py-2 text-sm text-[--text-primary] font-sans focus:border-[--accent] focus:outline-none resize-none"
-            placeholder="팀 소개" />
-        </div>
-
-        <div>
-          <label className="font-mono text-xs text-[--text-secondary] block mb-1">HACKATHON</label>
+          <label className="font-mono text-xs text-[--text-secondary] block mb-1">HACKATHON (OPTIONAL)</label>
           <select value={hackathonSlug} onChange={e => setHackathonSlug(e.target.value)}
             className="w-full bg-[--bg-base] border border-[--border] rounded px-3 py-2 text-sm text-[--text-primary] font-mono focus:border-[--accent] focus:outline-none">
-            <option value="">해커톤 없이</option>
+            <option value="">전체 (독립 팀)</option>
             {hackathons.map(h => (
               <option key={h.slug} value={h.slug}>{h.title}</option>
             ))}
           </select>
         </div>
 
-        <div className="flex items-center justify-between">
-          <label className="font-mono text-xs text-[--text-secondary]">RECRUITING</label>
-          <button type="button" onClick={() => setIsOpen(!isOpen_)}
-            className={`font-mono text-xs px-3 py-1 rounded border transition-all ${isOpen_ ? 'border-green-400 text-green-400 bg-green-400/10' : 'border-red-400 text-red-400 bg-red-400/10'}`}>
-            {isOpen_ ? 'OPEN' : 'CLOSED'}
-          </button>
+        <div>
+          <label className="font-mono text-xs text-[--text-secondary] block mb-1">MEMBER COUNT</label>
+          <div className="flex items-center gap-3">
+            <button type="button" onClick={() => setMemberCount(Math.max(1, memberCount - 1))}
+              className="w-8 h-8 flex items-center justify-center border border-[--border] rounded text-[--text-secondary] hover:border-[--accent] hover:text-[--accent] font-mono font-bold transition-all">
+              -
+            </button>
+            <span className="font-mono text-sm text-[--text-primary] font-bold w-6 text-center">{memberCount}</span>
+            <button type="button" onClick={() => setMemberCount(Math.min(5, memberCount + 1))}
+              className="w-8 h-8 flex items-center justify-center border border-[--border] rounded text-[--text-secondary] hover:border-[--accent] hover:text-[--accent] font-mono font-bold transition-all">
+              +
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label className="font-mono text-xs text-[--text-secondary] block mb-1">INTRO *</label>
+          <textarea value={intro} onChange={e => setIntro(e.target.value)} required rows={3}
+            className="w-full bg-[--bg-base] border border-[--border] rounded px-3 py-2 text-sm text-[--text-primary] font-sans focus:border-[--accent] focus:outline-none resize-none"
+            placeholder="팀 소개" />
         </div>
 
         <div>
@@ -125,15 +130,9 @@ export default function TeamCreateModal({ isOpen, onClose, hackathons }: TeamCre
             placeholder="https://..." />
         </div>
 
-        <div>
-          <label className="font-mono text-xs text-[--text-secondary] block mb-1">CURRENT MEMBERS</label>
-          <input type="number" min={1} max={5} value={memberCount} onChange={e => setMemberCount(Number(e.target.value))}
-            className="w-24 bg-[--bg-base] border border-[--border] rounded px-3 py-2 text-sm text-[--text-primary] font-mono focus:border-[--accent] focus:outline-none" />
-        </div>
-
         <button type="submit"
           className="w-full bg-[--accent] text-black font-mono font-bold text-sm py-2 rounded hover:brightness-110 transition-all">
-          팀 생성
+          팀 생성하기
         </button>
       </form>
     </Modal>

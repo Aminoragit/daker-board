@@ -7,7 +7,7 @@ import SectionTitle from '@/components/ui/SectionTitle';
 import { Upload, X, FileIcon } from 'lucide-react';
 
 const FILE_TYPES: Record<string, string> = {
-  zip: '.zip',
+  zip: '.zip,.tar.gz,.rar',
   pdf: '.pdf',
   csv: '.csv',
 };
@@ -15,6 +15,7 @@ const FILE_TYPES: Record<string, string> = {
 export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
   const { submit } = detail.sections;
   const addSubmission = useSubmissionStore(s => s.addSubmission);
+  const getSubmissionsByHackathon = useSubmissionStore(s => s.getSubmissionsByHackathon);
   const [teamName, setTeamName] = useState('');
   const [content, setContent] = useState('');
   const [notes, setNotes] = useState('');
@@ -123,6 +124,8 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
+  const pastSubmissions = getSubmissionsByHackathon(detail.slug);
+
   return (
     <div className="space-y-6">
       <SectionTitle>SUBMISSION GUIDE</SectionTitle>
@@ -152,7 +155,7 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
       )}
 
       <div className="border-t border-[--border] pt-6">
-        <SectionTitle>SUBMIT</SectionTitle>
+        <SectionTitle>NEW SUBMISSION</SectionTitle>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="font-mono text-xs text-[--text-secondary] block mb-1">TEAM NAME *</label>
@@ -292,7 +295,7 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
             type="submit"
             className="bg-[--accent] text-black font-mono font-bold text-sm px-6 py-2 rounded hover:brightness-110 transition-all"
           >
-            제출
+            제출하기
           </button>
 
           {submitted && (
@@ -300,6 +303,38 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
           )}
         </form>
       </div>
+
+      {/* SUBMISSION HISTORY */}
+      {pastSubmissions.length > 0 && (
+        <div className="border-t border-[--border] pt-6">
+          <SectionTitle>SUBMISSION HISTORY</SectionTitle>
+          <div className="space-y-2 mt-4">
+            {pastSubmissions.map((sub, i) => (
+              <div key={sub.id} className="bg-[--bg-elevated] border border-[--border] rounded p-3 flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs text-[--accent]">#{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-mono text-xs text-[--text-muted]">
+                    {new Date(sub.submittedAt).toLocaleString()}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="font-mono text-[10px] uppercase px-1.5 py-0.5 rounded-sm border border-[--border] text-[--text-secondary]">
+                    {sub.artifactType}
+                  </span>
+                  {sub.fileName ? (
+                    <span className="font-sans text-sm text-[--text-primary] truncate flex-1">{sub.fileName}</span>
+                  ) : (
+                    <span className="font-sans text-sm text-[--text-primary] truncate flex-1">{sub.content}</span>
+                  )}
+                  {sub.fileSize !== undefined && (
+                    <span className="font-mono text-xs text-[--text-muted] shrink-0">{formatFileSize(sub.fileSize)}</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

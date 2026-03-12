@@ -14,11 +14,10 @@ export default function TagBadge({ tag, active, onClick }: TagBadgeProps) {
       type="button"
       onClick={onClick}
       className={cn(
-        'font-mono uppercase text-xs px-2 py-0.5 rounded-sm transition-all',
-        'border',
+        'font-mono uppercase text-xs px-2 py-0.5 transition-all border rounded-sm',
         active
-          ? 'border-[--accent] text-[--accent] bg-[--accent]/10'
-          : 'border-[--border] text-[--text-secondary] hover:border-[--text-secondary]',
+          ? 'text-[--accent] border-[--accent] bg-[--accent]/10 text-glow font-bold'
+          : 'text-[--text-secondary] border-[--border] hover:text-[--text-primary] hover:border-[--text-muted]',
         onClick ? 'cursor-pointer' : 'cursor-default'
       )}
     >

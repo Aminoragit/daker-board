@@ -176,7 +176,7 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
       )}
 
       {/* Invite Modal */}
-      <Modal isOpen={showInviteModal} onClose={() => setShowInviteModal(false)} title="INVITE TEAM MEMBER">
+      <Modal isOpen={showInviteModal} onClose={() => setShowInviteModal(false)} title="INVITE MEMBER">
         <form onSubmit={handleInvite} className="space-y-4">
           <div>
             <label className="font-mono text-xs text-[--text-secondary] block mb-1">SELECT TEAM</label>
@@ -213,7 +213,7 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
       </Modal>
 
       {/* Caution Modal */}
-      <Modal isOpen={showCautionModal} onClose={() => setShowCautionModal(false)} title="TEAM FORMATION GUIDELINES">
+      <Modal isOpen={showCautionModal} onClose={() => setShowCautionModal(false)} title="TEAM GUIDELINES">
         <div className="space-y-3">
           <div className="flex gap-2 items-start">
             <AlertTriangle size={16} className="text-yellow-500 shrink-0 mt-0.5" />
@@ -222,9 +222,11 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
               <ul className="space-y-1 text-[--text-secondary] text-xs font-mono list-none">
                 <li>• 최대 팀원 수: {detail.sections.overview.teamPolicy.maxTeamSize}명</li>
                 <li>• 솔로 참가: {detail.sections.overview.teamPolicy.allowSolo ? '허용' : '불가'}</li>
-                <li>• 팀 구성 후 변경이 어려울 수 있습니다</li>
-                <li>• 팀원 간 충분한 역할 분담을 권장합니다</li>
-                <li>• 연락처(오픈카톡 등)를 반드시 기재해 주세요</li>
+                <li>• 팀 구성 후 변경 불가</li>
+                <li>• 팀원 간 역할 분담 권장</li>
+                <li>• 제출물은 팀 단위로 평가</li>
+                <li>• 부정행위 적발 시 실격</li>
+                <li>• 데드라인 이후 팀 변경 불가</li>
               </ul>
             </div>
           </div>
