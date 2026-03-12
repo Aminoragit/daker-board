@@ -87,15 +87,15 @@ export default function TeamCreateModal({ isOpen, onClose, hackathons }: TeamCre
 
         <div>
           <label className="font-mono text-xs text-[--text-secondary] block mb-1">MEMBER COUNT</label>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 font-mono text-sm text-[--text-primary] font-bold">
             <button type="button" onClick={() => setMemberCount(Math.max(1, memberCount - 1))}
-              className="w-8 h-8 flex items-center justify-center border border-[--border] rounded text-[--text-secondary] hover:border-[--accent] hover:text-[--accent] font-mono font-bold transition-all">
-              -
+              className="text-[--text-secondary] hover:text-[--accent] transition-all">
+              [-]
             </button>
-            <span className="font-mono text-sm text-[--text-primary] font-bold w-6 text-center">{memberCount}</span>
+            <span className="w-4 text-center">{memberCount}</span>
             <button type="button" onClick={() => setMemberCount(Math.min(5, memberCount + 1))}
-              className="w-8 h-8 flex items-center justify-center border border-[--border] rounded text-[--text-secondary] hover:border-[--accent] hover:text-[--accent] font-mono font-bold transition-all">
-              +
+              className="text-[--text-secondary] hover:text-[--accent] transition-all">
+              [+]
             </button>
           </div>
         </div>

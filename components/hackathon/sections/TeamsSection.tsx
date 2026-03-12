@@ -101,53 +101,7 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
         )}
       </div>
 
-      {pendingInvitations.length > 0 && (
-        <div className="mb-4 space-y-2">
-          <p className="font-mono text-xs text-[--text-secondary]">PENDING INVITATIONS ({pendingInvitations.length})</p>
-          {pendingInvitations.map(inv => (
-            <div key={inv.id} className="bg-[--bg-elevated] border border-yellow-500/30 rounded p-3 flex items-center justify-between">
-              <div>
-                <p className="font-sans text-sm text-[--text-primary]">
-                  <span className="font-bold">{inv.fromTeamName}</span>
-                  <span className="text-[--text-secondary]"> → </span>
-                  <span>{inv.toNickname}</span>
-                </p>
-                <p className="font-mono text-xs text-[--text-secondary]">PENDING</p>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleInvitationAction(inv.id, 'accepted')}
-                  className="inline-flex items-center gap-1 font-mono text-xs px-3 py-1 rounded border border-green-400 text-green-400 bg-green-400/10 hover:bg-green-400/20 transition-all"
-                >
-                  <Check size={12} />
-                  수락
-                </button>
-                <button
-                  onClick={() => handleInvitationAction(inv.id, 'rejected')}
-                  className="inline-flex items-center gap-1 font-mono text-xs px-3 py-1 rounded border border-red-400 text-red-400 bg-red-400/10 hover:bg-red-400/20 transition-all"
-                >
-                  <XIcon size={12} />
-                  거절
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
 
-      {invitations.filter(inv => inv.status !== 'pending').length > 0 && (
-        <div className="mb-4 space-y-1">
-          <p className="font-mono text-xs text-[--text-secondary]">INVITATION HISTORY</p>
-          {invitations.filter(inv => inv.status !== 'pending').map(inv => (
-            <div key={inv.id} className="flex items-center gap-2 text-xs font-mono text-[--text-secondary]">
-              <span>{inv.fromTeamName} → {inv.toNickname}</span>
-              <span className={inv.status === 'accepted' ? 'text-green-400' : 'text-red-400'}>
-                {inv.status === 'accepted' ? 'ACCEPTED' : 'REJECTED'}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
 
       {teams.length > 0 ? (
         <div className="space-y-2 mt-4">
@@ -210,6 +164,38 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
             초대 보내기
           </button>
         </form>
+
+        {invitations.length > 0 && (
+          <div className="mt-8 pt-6 border-t border-[--border]">
+            <p className="font-mono text-xs text-[--text-secondary] uppercase tracking-widest mb-4">
+              {'// '}INVITATION HISTORY
+            </p>
+            <div className="space-y-2">
+              {invitations.map(inv => (
+                <div key={inv.id} className="font-mono text-[11px] flex items-center justify-between text-[--text-primary]">
+                  <div className="flex items-center gap-2">
+                    <span className="opacity-80">{inv.toNickname}</span>
+                    <span className="text-[--text-secondary]">→</span>
+                    <span className="font-bold">{inv.fromTeamName}</span>
+                    <span className="text-[--text-secondary]">──</span>
+                    <span className={
+                      inv.status === 'pending' ? 'text-yellow-500' : 
+                      inv.status === 'accepted' ? 'text-green-400' : 'text-red-400'
+                    }>
+                      {inv.status.toUpperCase()}
+                    </span>
+                  </div>
+                  {inv.status === 'pending' && (
+                    <div className="flex gap-2">
+                      <button onClick={() => handleInvitationAction(inv.id, 'accepted')} className="text-[--text-secondary] hover:text-green-400">[수락]</button>
+                      <button onClick={() => handleInvitationAction(inv.id, 'rejected')} className="text-[--text-secondary] hover:text-red-400">[거절]</button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </Modal>
 
       {/* Caution Modal */}

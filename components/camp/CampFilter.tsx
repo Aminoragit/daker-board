@@ -21,45 +21,51 @@ export default function CampFilter({
   selectedRoles, onRoleToggle,
 }: CampFilterProps) {
   return (
-    <div className="space-y-3 mb-6">
-      <div className="flex flex-wrap items-center gap-3">
-        <select
-          value={selectedHackathon}
-          onChange={e => onHackathonChange(e.target.value)}
-          className="bg-[--bg-base] border border-[--border] rounded px-3 py-1.5 font-mono text-xs text-[--text-primary] focus:border-[--accent] focus:outline-none"
-        >
-          <option value="">ALL HACKATHONS</option>
-          {hackathons.map(h => (
-            <option key={h.slug} value={h.slug}>{h.title}</option>
-          ))}
-        </select>
+    <div className="space-y-3 mb-6 pt-2">
+      <div className="flex flex-wrap items-center gap-4">
+        <label className="flex items-center gap-2 cursor-pointer font-mono text-xs text-[--text-secondary]">
+          <span>해커톤:</span>
+          <div className="relative">
+            <select
+              value={selectedHackathon}
+              onChange={e => onHackathonChange(e.target.value)}
+              className="bg-transparent border-none p-0 pr-4 font-mono text-xs text-[--text-primary] focus:ring-0 cursor-pointer appearance-none"
+            >
+              <option value="" className="bg-[--bg-surface]">[전체]</option>
+              {hackathons.map(h => (
+                <option key={h.slug} value={h.slug} className="bg-[--bg-surface]">[{h.title}]</option>
+              ))}
+            </select>
+            <span className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none opacity-50">▾</span>
+          </div>
+        </label>
 
         <button
           onClick={() => onOpenOnlyChange(!openOnly)}
           className={cn(
-            'font-mono text-xs px-3 py-1.5 rounded border transition-all',
+            'font-mono text-xs transition-all',
             openOnly
-              ? 'border-green-400 text-green-400 bg-green-400/10'
-              : 'border-[--border] text-[--text-secondary] hover:border-[--text-secondary]'
+              ? 'text-green-400 font-bold'
+              : 'text-[--text-secondary] hover:text-[--text-primary]'
           )}
         >
-          OPEN ONLY
+          [{openOnly ? '☑' : '☐'} OPEN만]
         </button>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mt-2">
         {roles.map(role => (
           <button
             key={role}
             onClick={() => onRoleToggle(role)}
             className={cn(
-              'font-mono text-xs px-2 py-0.5 rounded-sm border transition-all',
+              'font-mono text-xs uppercase tracking-wider transition-all',
               selectedRoles.includes(role)
-                ? 'border-[--accent] text-[--accent] bg-[--accent]/10'
-                : 'border-[--border] text-[--text-secondary] hover:border-[--text-secondary]'
+                ? 'text-[--accent] font-bold'
+                : 'text-[--text-secondary] hover:text-[--text-primary]'
             )}
           >
-            {role}
+            [{role}]
           </button>
         ))}
       </div>
