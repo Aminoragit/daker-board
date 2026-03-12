@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import type { Team } from '@/data/types';
 import { SEED_TEAMS } from '@/data/seed';
 
+const SEED_VERSION = '2';
+
 interface TeamStore {
   teams: Team[];
   initialized: boolean;
@@ -20,14 +22,19 @@ export const useTeamStore = create<TeamStore>((set, get) => ({
     if (get().initialized) return;
     if (typeof window === 'undefined') return;
 
+    const storedVersion = localStorage.getItem('daker_seed_version');
+    const needsReseed = storedVersion !== SEED_VERSION;
+
     let teams: Team[];
     try {
-      const stored = localStorage.getItem('daker_teams');
+      const stored = !needsReseed ? localStorage.getItem('daker_teams') : null;
       teams = stored ? JSON.parse(stored) : SEED_TEAMS;
-      if (!stored) localStorage.setItem('daker_teams', JSON.stringify(SEED_TEAMS));
+      if (!stored || needsReseed) localStorage.setItem('daker_teams', JSON.stringify(SEED_TEAMS));
     } catch {
       teams = SEED_TEAMS;
     }
+
+    if (needsReseed) localStorage.setItem('daker_seed_version', SEED_VERSION);
 
     set({ teams, initialized: true });
   },
