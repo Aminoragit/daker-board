@@ -62,8 +62,6 @@ export default function HomePage() {
 
   if (!hackathonStore.initialized) return <LoadingState />;
 
-  const ongoingCount = hackathonStore.hackathons.filter(h => h.status === 'ongoing').length;
-
   return (
     <PageTransition>
       {/* Hero */}
