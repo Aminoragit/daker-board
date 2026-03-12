@@ -7,7 +7,6 @@ import { useTeamStore } from '@/store/teamStore';
 import TagBadge from '@/components/ui/TagBadge';
 import Modal from '@/components/ui/Modal';
 import MessageModal from '@/components/camp/MessageModal';
-import { ExternalLink, Edit2, ToggleLeft, ToggleRight, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const roleOptions = ['Backend', 'Frontend', 'Designer', 'ML Engineer', 'PM', 'Other'];
@@ -80,7 +79,7 @@ export default function TeamCard({ team }: { team: Team }) {
         <p className="text-sm text-[--text-secondary] font-sans line-clamp-3 break-keep mb-4">{team.intro}</p>
 
         <div className="mb-5">
-          <div className="flex justify-between font-mono text-[10px] text-[--text-muted] mb-1.5 uppercase">
+          <div className="flex justify-between font-mono text-[10px] text-[--text-secondary] mb-1.5 uppercase">
             <span>MEMBERS</span>
             <span className="text-[--text-primary] whitespace-nowrap">{team.memberCount}/5</span>
           </div>
@@ -105,39 +104,34 @@ export default function TeamCard({ team }: { team: Team }) {
           </div>
         )}
 
-        <div className="flex items-center gap-1.5 flex-wrap pt-4 border-t border-[--border]/40">
+        <div className="flex items-center gap-3 flex-wrap mt-auto pt-2">
           <a
             href={team.contact.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 inline-flex justify-center items-center gap-1 bg-[#000]/50 border border-[--border] text-[--text-primary] hover:border-[--accent] hover:text-[--accent] hover:shadow-[0_0_8px_rgba(245,158,11,0.2)] font-mono text-[10px] font-bold px-2 py-1.5 rounded-sm transition-all uppercase tracking-wider"
+            className="font-mono text-[11px] font-bold text-[--text-secondary] hover:text-[--text-primary] transition-colors uppercase tracking-widest"
           >
-            <ExternalLink size={12} />
-            CONTACT
+            [CONTACT]
           </a>
           <button
             onClick={() => setMsgOpen(true)}
-            className="flex-1 inline-flex justify-center items-center gap-1 bg-[#000]/50 border border-[--border] text-[--text-primary] hover:border-[--blue] hover:text-[--blue] hover:shadow-[0_0_8px_rgba(59,130,246,0.2)] font-mono text-[10px] font-bold px-2 py-1.5 rounded-sm transition-all uppercase tracking-wider"
+            className="font-mono text-[11px] font-bold text-[--text-secondary] hover:text-[--text-primary] transition-colors uppercase tracking-widest"
           >
-            <MessageSquare size={12} />
-            MESSAGE
+            [MESSAGE]
           </button>
           <button
             onClick={() => setEditOpen(true)}
-            className="flex-1 inline-flex justify-center items-center gap-1 border border-dashed border-[--border] text-[--text-secondary] hover:border-[--text-primary] hover:text-[--text-primary] font-mono text-[10px] px-2 py-1.5 rounded-sm transition-all uppercase"
+            className="font-mono text-[11px] font-bold text-[--text-secondary] hover:text-[--text-primary] transition-colors uppercase tracking-widest"
           >
-            <Edit2 size={11} /> EDIT
+            [EDIT]
           </button>
           <button
             onClick={handleToggleOpen}
-            className={`flex-1 inline-flex justify-center items-center gap-1 border border-dashed font-mono text-[10px] px-2 py-1.5 rounded-sm transition-all uppercase ${
-              team.isOpen
-                ? 'border-red-400/50 text-red-400 hover:bg-red-400/10'
-                : 'border-green-400/50 text-green-400 hover:bg-green-400/10'
+            className={`font-mono text-[11px] font-bold transition-colors uppercase tracking-widest ${
+              team.isOpen ? 'text-[--text-secondary] hover:font-bold hover:text-red-400' : 'text-green-400 hover:text-green-300'
             }`}
           >
-            {team.isOpen ? <ToggleRight size={11} /> : <ToggleLeft size={11} />}
-            {team.isOpen ? 'CLOSE' : 'REOPEN'}
+            [{team.isOpen ? 'CLOSE' : 'REOPEN'}]
           </button>
         </div>
       </div>

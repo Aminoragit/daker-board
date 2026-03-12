@@ -57,7 +57,7 @@ export default function MessageModal({ isOpen, onClose, team }: MessageModalProp
       {sent ? (
         <div className="flex flex-col items-center py-8 gap-3">
           <p className="font-mono text-sm text-green-400">✓ MESSAGE SENT</p>
-          <p className="font-mono text-xs text-[--text-muted]">→ {team.name}</p>
+          <p className="font-mono text-xs text-[--text-secondary]">→ {team.name}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -68,9 +68,9 @@ export default function MessageModal({ isOpen, onClose, team }: MessageModalProp
           )}
 
           <div className="bg-[--bg-elevated] border border-[--border] rounded p-3">
-            <p className="font-mono text-xs text-[--text-muted]">TO</p>
+            <p className="font-mono text-xs text-[--text-secondary]">TO</p>
             <p className="font-sans text-sm text-[--text-primary] font-bold">{team.name}</p>
-            <p className="font-mono text-xs text-[--text-muted]">{team.teamCode}</p>
+            <p className="font-mono text-xs text-[--text-secondary]">{team.teamCode}</p>
           </div>
 
           <div>

@@ -20,7 +20,7 @@ export default function ErrorState({ message = 'AN ERROR OCCURRED', onRetry }: E
           className="inline-flex items-center gap-2 font-mono text-xs text-[--text-secondary] border border-[--border] rounded px-4 py-2 hover:border-[--accent] hover:text-[--accent] transition-all"
         >
           <RefreshCw size={12} />
-          RETRY
+          [ RETRY ]
         </button>
       )}
     </div>

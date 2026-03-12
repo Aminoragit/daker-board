@@ -23,7 +23,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           <span className="relative flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-sm bg-red-500 pulse-dot shadow-neon-amber" />
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500 pulse-dot shadow-neon-amber" />
             <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-red-400">LIVE</span>
           </span>
           <span className="text-[--accent] group-hover:text-glow transition-all duration-300">

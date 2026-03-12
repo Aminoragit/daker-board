@@ -66,7 +66,7 @@ export default function RankingsPage() {
       </div>
 
       <div className="flex flex-col gap-2 mb-8 bg-[#000]/30 p-4 border border-[--border] tech-border">
-        <span className="font-mono text-[10px] text-[--text-muted] uppercase tracking-widest flex items-center gap-2">
+        <span className="font-mono text-[10px] text-[--text-secondary] uppercase tracking-widest flex items-center gap-2">
           <span className="text-[--purple]">&gt;</span> TEMPORAL_FILTER:
         </span>
         <div className="flex flex-wrap gap-2">

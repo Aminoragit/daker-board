@@ -71,11 +71,11 @@ export default function MessageInbox() {
                         <p className="font-mono text-xs text-[--text-primary] font-bold truncate">
                           {msg.fromNickname}
                         </p>
-                        <span className="font-mono text-[10px] text-[--text-muted] shrink-0">
+                        <span className="font-mono text-[10px] text-[--text-secondary] shrink-0">
                           {formatDate(msg.createdAt)}
                         </span>
                       </div>
-                      <p className="font-mono text-xs text-[--text-muted]">→ {msg.toTeamName}</p>
+                      <p className="font-mono text-xs text-[--text-secondary]">→ {msg.toTeamName}</p>
                       <p className="text-xs text-[--text-secondary] font-sans mt-0.5 truncate">
                         {msg.content}
                       </p>

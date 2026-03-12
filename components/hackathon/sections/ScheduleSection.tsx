@@ -18,7 +18,7 @@ export default function ScheduleSection({ detail }: { detail: HackathonDetail })
     return (
       <div>
         <SectionTitle>SCHEDULE</SectionTitle>
-        <p className="font-mono text-xs text-[--text-muted]">LOADING...</p>
+        <p className="font-mono text-xs text-[--text-secondary]">LOADING...</p>
       </div>
     );
   }

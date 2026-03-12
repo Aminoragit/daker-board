@@ -23,7 +23,7 @@ export default function HackathonFilter({ activeStatus, onStatusChange, allTags,
   return (
     <div className="space-y-4 mb-8 bg-[#000]/30 p-4 border border-[--border] tech-border">
       <div className="flex flex-col gap-2">
-        <span className="font-mono text-[10px] text-[--text-muted] uppercase tracking-widest flex items-center gap-2">
+        <span className="font-mono text-[10px] text-[--text-secondary] uppercase tracking-widest flex items-center gap-2">
           <span className="text-[--accent]">&gt;</span> FILTER_BY_STATE:
         </span>
         <div className="flex flex-wrap gap-2">
@@ -48,7 +48,7 @@ export default function HackathonFilter({ activeStatus, onStatusChange, allTags,
 
       {allTags.length > 0 && (
         <div className="flex flex-col gap-2 pt-3 border-t border-[--border]/50">
-          <span className="font-mono text-[10px] text-[--text-muted] uppercase tracking-widest flex items-center gap-2">
+          <span className="font-mono text-[10px] text-[--text-secondary] uppercase tracking-widest flex items-center gap-2">
             <span className="text-[--accent]">&gt;</span> FILTER_BY_SPEC:
           </span>
           <div className="flex flex-wrap gap-2">

@@ -67,11 +67,11 @@ export default function RankingTable({ rankings }: { rankings: GlobalRankingEntr
         <table className="w-full text-left border-collapse min-w-[500px]">
           <thead>
             <tr className="border-b border-[--border]/80 bg-[--term-surface]/50">
-              <th className="font-mono text-[10px] text-[--text-muted] py-3 px-4 uppercase tracking-widest w-16">Rank</th>
-              <th className="font-mono text-[10px] text-[--text-muted] py-3 px-4 uppercase tracking-widest">Nickname</th>
-              <th className="font-mono text-[10px] text-[--text-muted] py-3 px-4 uppercase tracking-widest text-right">Points</th>
-              <th className="font-mono text-[10px] text-[--text-muted] py-3 px-4 uppercase tracking-widest text-right hidden sm:table-cell">Entries</th>
-              <th className="font-mono text-[10px] text-[--text-muted] py-3 px-4 uppercase tracking-widest text-right hidden sm:table-cell">Best Rank</th>
+              <th className="font-mono text-[10px] text-[--text-secondary] py-3 px-4 uppercase tracking-widest w-16">Rank</th>
+              <th className="font-mono text-[10px] text-[--text-secondary] py-3 px-4 uppercase tracking-widest">Nickname</th>
+              <th className="font-mono text-[10px] text-[--text-secondary] py-3 px-4 uppercase tracking-widest text-right">Points</th>
+              <th className="font-mono text-[10px] text-[--text-secondary] py-3 px-4 uppercase tracking-widest text-right hidden sm:table-cell">Entries</th>
+              <th className="font-mono text-[10px] text-[--text-secondary] py-3 px-4 uppercase tracking-widest text-right hidden sm:table-cell">Best Rank</th>
             </tr>
           </thead>
           <tbody className="font-mono text-sm whitespace-nowrap">
@@ -84,7 +84,7 @@ export default function RankingTable({ rankings }: { rankings: GlobalRankingEntr
                 )}>
                 <td className="py-3 px-4">
                   <div className="flex items-center justify-center w-8">
-                    {entry.rank <= 3 ? <RankIcon rank={entry.rank} /> : <span className="text-[--text-muted] group-hover:text-[--accent] transition-colors">[{entry.rank.toString().padStart(2, '0')}]</span>}
+                    {entry.rank <= 3 ? <RankIcon rank={entry.rank} /> : <span className="text-[--text-secondary] group-hover:text-[--accent] transition-colors">[{entry.rank.toString().padStart(2, '0')}]</span>}
                   </div>
                 </td>
                 <td className="py-3 px-4 max-w-[120px] sm:max-w-[200px] truncate">

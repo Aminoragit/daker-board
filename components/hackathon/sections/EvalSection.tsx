@@ -22,11 +22,11 @@ export default function EvalSection({ detail }: { detail: HackathonDetail }) {
       {evalData.limits && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="bg-[--bg-surface] border border-[--border] rounded p-3">
-            <p className="font-mono text-xs text-[--text-muted] mb-1">MAX RUNTIME</p>
+            <p className="font-mono text-xs text-[--text-secondary] mb-1">MAX RUNTIME</p>
             <p className="font-mono text-sm text-[--text-primary]">{evalData.limits.maxRuntimeSec}s</p>
           </div>
           <div className="bg-[--bg-surface] border border-[--border] rounded p-3">
-            <p className="font-mono text-xs text-[--text-muted] mb-1">DAILY SUBMISSIONS</p>
+            <p className="font-mono text-xs text-[--text-secondary] mb-1">DAILY SUBMISSIONS</p>
             <p className="font-mono text-sm text-[--text-primary]">{evalData.limits.maxSubmissionsPerDay}</p>
           </div>
         </div>

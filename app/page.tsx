@@ -40,7 +40,7 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const text = "> SYSTEM BOOT SEQUENCE INITIATED... WELCOME, ADMIN.";
+    const text = "바이브 코딩으로 세상을 바꾸는...";
     let i = 0;
     const interval = setInterval(() => {
       setTypedText(text.slice(0, i));
@@ -77,7 +77,7 @@ export default function HomePage() {
         
         <div className="flex flex-col items-center justify-center text-center px-4">
           <div className="inline-flex items-center gap-3 mb-8 bg-[--term-green-dim]/30 border border-[--term-green]/50 rounded-sm px-4 py-2 shadow-neon-green">
-            <span className="w-2.5 h-2.5 rounded-sm bg-[--term-green] pulse-dot" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[--term-green] pulse-dot" />
             <span className="font-mono text-sm text-[--term-green] font-bold uppercase tracking-[0.2em] text-glow-green">SYSTEM STATUS: OPERATIONAL</span>
           </div>
 
@@ -86,10 +86,10 @@ export default function HomePage() {
           </h1>
 
           <div className="font-mono text-[--text-secondary] text-sm sm:text-base mb-8 max-w-2xl bg-[#000]/40 p-4 border border-[--border] rounded-sm flex items-start gap-3 text-left w-full sm:w-auto mx-auto">
-            <Terminal size={18} className="mt-0.5 text-[--text-muted] shrink-0" />
+            <Terminal size={18} className="mt-0.5 text-[--text-secondary] shrink-0" />
             <div className="flex-1">
               <p className="text-[--text-primary] mb-1">{typedText}</p>
-              <p className="text-xs text-[--text-muted] mt-2 border-t border-[--border]/50 pt-2">
+              <p className="text-xs text-[--text-secondary] mt-2 border-t border-[--border]/50 pt-2">
                 &gt; LOADING MODULES... [OK]<br/>
                 &gt; DECRYPTING HACKATHON DATA... [OK]<br/>
                 &gt; READY FOR DEPLOYMENT.
@@ -100,14 +100,14 @@ export default function HomePage() {
           <div className="inline-flex items-center gap-4 bg-[--term-bg] border border-[--accent]/30 rounded-sm px-6 py-3">
             <Server size={18} className="text-[--accent]" />
             <div className="flex flex-col text-left">
-              <span className="font-mono text-[10px] text-[--text-muted] uppercase">Active Events</span>
+              <span className="font-mono text-[10px] text-[--text-secondary] uppercase">Active Events</span>
               <span className="font-mono text-lg font-bold text-[--text-primary] leading-none">
                 {hackathonStore.hackathons.length}
               </span>
             </div>
             <div className="w-px h-8 bg-[--border] mx-2" />
             <div className="flex flex-col text-left">
-              <span className="font-mono text-[10px] text-[--text-muted] uppercase">Total Teams</span>
+              <span className="font-mono text-[10px] text-[--text-secondary] uppercase">Total Teams</span>
               <span className="font-mono text-lg font-bold text-[--text-primary] leading-none">
                 {teamStore.teams.length}
               </span>
@@ -128,7 +128,7 @@ export default function HomePage() {
               <h3 className={`font-mono font-bold text-lg mb-2 tracking-wide ${card.text}`}>{card.label}</h3>
               <p className="font-sans text-sm text-[--text-secondary] font-light">{card.desc}</p>
               
-              <div className="mt-6 flex items-center font-mono text-xs font-bold uppercase tracking-widest text-[--text-muted] group-hover:text-[--text-primary] transition-colors">
+              <div className="mt-6 flex items-center font-mono text-xs font-bold uppercase tracking-widest text-[--text-secondary] group-hover:text-[--text-primary] transition-colors">
                 Initialize <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </div>

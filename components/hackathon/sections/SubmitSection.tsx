@@ -146,7 +146,7 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
             <div key={item.key} className="bg-[--bg-elevated] border border-[--border] rounded p-3">
               <div className="flex items-center gap-2 mb-1">
                 <span className="font-mono text-xs text-[--accent]">STEP {i + 1}</span>
-                <span className="font-mono text-xs text-[--text-muted]">({item.format})</span>
+                <span className="font-mono text-xs text-[--text-secondary]">({item.format})</span>
               </div>
               <p className="text-sm font-sans text-[--text-primary]">{item.title}</p>
             </div>
@@ -189,8 +189,8 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
                       <div className="flex items-center gap-2 bg-[--bg-base] border border-[--border] rounded px-3 py-2">
                         <FileIcon size={14} className="text-[--accent] shrink-0" />
                         <span className="text-sm text-[--text-primary] font-sans truncate flex-1">{itemFiles[item.key].name}</span>
-                        <span className="font-mono text-xs text-[--text-muted] shrink-0">{formatFileSize(itemFiles[item.key].size)}</span>
-                        <button type="button" onClick={() => clearFile(item.key)} className="text-[--text-muted] hover:text-red-400 transition-colors shrink-0">
+                        <span className="font-mono text-xs text-[--text-secondary] shrink-0">{formatFileSize(itemFiles[item.key].size)}</span>
+                        <button type="button" onClick={() => clearFile(item.key)} className="text-[--text-secondary] hover:text-red-400 transition-colors shrink-0">
                           <X size={14} />
                         </button>
                       </div>
@@ -199,8 +199,8 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
                         htmlFor={`file-${item.key}`}
                         className="flex items-center gap-2 bg-[--bg-base] border border-dashed border-[--border] rounded px-3 py-3 cursor-pointer hover:border-[--accent] transition-colors"
                       >
-                        <Upload size={14} className="text-[--text-muted]" />
-                        <span className="font-mono text-xs text-[--text-muted]">파일 선택 (또는 아래 URL 입력)</span>
+                        <Upload size={14} className="text-[--text-secondary]" />
+                        <span className="font-mono text-xs text-[--text-secondary]">파일 선택 (또는 아래 URL 입력)</span>
                       </label>
                     )}
                     <input
@@ -239,8 +239,8 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
                 <div className="flex items-center gap-2 bg-[--bg-base] border border-[--border] rounded px-3 py-2">
                   <FileIcon size={14} className="text-[--accent] shrink-0" />
                   <span className="text-sm text-[--text-primary] font-sans truncate flex-1">{fileData.name}</span>
-                  <span className="font-mono text-xs text-[--text-muted] shrink-0">{formatFileSize(fileData.size)}</span>
-                  <button type="button" onClick={() => clearFile()} className="text-[--text-muted] hover:text-red-400 transition-colors shrink-0">
+                  <span className="font-mono text-xs text-[--text-secondary] shrink-0">{formatFileSize(fileData.size)}</span>
+                  <button type="button" onClick={() => clearFile()} className="text-[--text-secondary] hover:text-red-400 transition-colors shrink-0">
                     <X size={14} />
                   </button>
                 </div>
@@ -249,9 +249,9 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
                   htmlFor="file-upload-main"
                   className="flex flex-col items-center gap-2 bg-[--bg-base] border border-dashed border-[--border] rounded px-3 py-6 cursor-pointer hover:border-[--accent] transition-colors"
                 >
-                  <Upload size={20} className="text-[--text-muted]" />
-                  <span className="font-mono text-xs text-[--text-muted]">클릭하여 파일 선택</span>
-                  <span className="font-mono text-xs text-[--text-muted]">({fileArtifactTypes.join(', ').toUpperCase()} 형식)</span>
+                  <Upload size={20} className="text-[--text-secondary]" />
+                  <span className="font-mono text-xs text-[--text-secondary]">클릭하여 파일 선택</span>
+                  <span className="font-mono text-xs text-[--text-secondary]">({fileArtifactTypes.join(', ').toUpperCase()} 형식)</span>
                 </label>
               )}
             </div>
@@ -310,24 +310,17 @@ export default function SubmitSection({ detail }: { detail: HackathonDetail }) {
           <SectionTitle>SUBMISSION HISTORY</SectionTitle>
           <div className="space-y-2 mt-4">
             {pastSubmissions.map((sub, i) => (
-              <div key={sub.id} className="bg-[--bg-elevated] border border-[--border] rounded p-3 flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-[--accent]">#{String(i + 1).padStart(2, '0')}</span>
-                  <span className="font-mono text-xs text-[--text-muted]">
-                    {new Date(sub.submittedAt).toLocaleString()}
-                  </span>
+              <div key={sub.id} className="font-mono text-sm leading-tight group py-2 border-b border-[--border]/40 last:border-0">
+                <div className="flex items-center gap-3 text-[--text-secondary]">
+                  <span className="text-[--accent] font-bold">#{i + 1}</span>
+                  <span className="w-8 opacity-70">{sub.artifactType}</span>
+                  <span>{new Date(sub.submittedAt).toLocaleString('sv-SE', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).replace('T', ' ')}</span>
                 </div>
-                <div className="flex items-center gap-3 flex-wrap">
-                  <span className="font-mono text-[10px] uppercase px-1.5 py-0.5 rounded-sm border border-[--border] text-[--text-secondary]">
-                    {sub.artifactType}
-                  </span>
+                <div className="pl-14 pt-1 text-[--text-primary] opacity-80 group-hover:opacity-100 transition-opacity">
                   {sub.fileName ? (
-                    <span className="font-sans text-sm text-[--text-primary] truncate flex-1">{sub.fileName}</span>
+                    <span className="truncate block">{sub.fileName} {sub.fileSize !== undefined && `— ${formatFileSize(sub.fileSize)}`}</span>
                   ) : (
-                    <span className="font-sans text-sm text-[--text-primary] truncate flex-1">{sub.content}</span>
-                  )}
-                  {sub.fileSize !== undefined && (
-                    <span className="font-mono text-xs text-[--text-muted] shrink-0">{formatFileSize(sub.fileSize)}</span>
+                    <span className="truncate block">{sub.content}</span>
                   )}
                 </div>
               </div>

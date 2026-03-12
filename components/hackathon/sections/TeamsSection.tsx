@@ -103,16 +103,16 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
 
       {pendingInvitations.length > 0 && (
         <div className="mb-4 space-y-2">
-          <p className="font-mono text-xs text-[--text-muted]">PENDING INVITATIONS ({pendingInvitations.length})</p>
+          <p className="font-mono text-xs text-[--text-secondary]">PENDING INVITATIONS ({pendingInvitations.length})</p>
           {pendingInvitations.map(inv => (
             <div key={inv.id} className="bg-[--bg-elevated] border border-yellow-500/30 rounded p-3 flex items-center justify-between">
               <div>
                 <p className="font-sans text-sm text-[--text-primary]">
                   <span className="font-bold">{inv.fromTeamName}</span>
-                  <span className="text-[--text-muted]"> → </span>
+                  <span className="text-[--text-secondary]"> → </span>
                   <span>{inv.toNickname}</span>
                 </p>
-                <p className="font-mono text-xs text-[--text-muted]">PENDING</p>
+                <p className="font-mono text-xs text-[--text-secondary]">PENDING</p>
               </div>
               <div className="flex gap-2">
                 <button
@@ -137,9 +137,9 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
 
       {invitations.filter(inv => inv.status !== 'pending').length > 0 && (
         <div className="mb-4 space-y-1">
-          <p className="font-mono text-xs text-[--text-muted]">INVITATION HISTORY</p>
+          <p className="font-mono text-xs text-[--text-secondary]">INVITATION HISTORY</p>
           {invitations.filter(inv => inv.status !== 'pending').map(inv => (
-            <div key={inv.id} className="flex items-center gap-2 text-xs font-mono text-[--text-muted]">
+            <div key={inv.id} className="flex items-center gap-2 text-xs font-mono text-[--text-secondary]">
               <span>{inv.fromTeamName} → {inv.toNickname}</span>
               <span className={inv.status === 'accepted' ? 'text-green-400' : 'text-red-400'}>
                 {inv.status === 'accepted' ? 'ACCEPTED' : 'REJECTED'}
@@ -155,7 +155,7 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
             <div key={team.teamCode} className="bg-[--bg-elevated] border border-[--border] rounded p-3 flex items-center justify-between">
               <div>
                 <p className="font-sans font-bold text-sm text-[--text-primary]">{team.name}</p>
-                <p className="font-mono text-xs text-[--text-muted]">{team.memberCount} members</p>
+                <p className="font-mono text-xs text-[--text-secondary]">{team.memberCount} members</p>
               </div>
               <span className={`font-mono text-xs px-2 py-0.5 rounded-sm ${team.isOpen ? 'text-green-400 bg-green-400/15' : 'text-red-400 bg-red-400/15'}`}>
                 {team.isOpen ? 'OPEN' : 'CLOSED'}
@@ -215,21 +215,25 @@ export default function TeamsSection({ detail }: { detail: HackathonDetail }) {
       {/* Caution Modal */}
       <Modal isOpen={showCautionModal} onClose={() => setShowCautionModal(false)} title="TEAM GUIDELINES">
         <div className="space-y-3">
-          <div className="flex gap-2 items-start">
-            <AlertTriangle size={16} className="text-yellow-500 shrink-0 mt-0.5" />
-            <div className="space-y-2 text-sm font-sans text-[--text-primary]">
-              <p>팀 구성 시 아래 사항을 반드시 확인해 주세요:</p>
-              <ul className="space-y-1 text-[--text-secondary] text-xs font-mono list-none">
-                <li>• 최대 팀원 수: {detail.sections.overview.teamPolicy.maxTeamSize}명</li>
-                <li>• 솔로 참가: {detail.sections.overview.teamPolicy.allowSolo ? '허용' : '불가'}</li>
-                <li>• 팀 구성 후 변경 불가</li>
-                <li>• 팀원 간 역할 분담 권장</li>
-                <li>• 제출물은 팀 단위로 평가</li>
-                <li>• 부정행위 적발 시 실격</li>
-                <li>• 데드라인 이후 팀 변경 불가</li>
+            <div className="space-y-4 text-sm font-sans text-[--text-primary] w-full">
+              <ul className="space-y-1 text-sm list-none font-bold">
+                <li>● 최대 팀원 수: {detail.sections.overview.teamPolicy.maxTeamSize}명</li>
+                <li>● 개인 참가: {detail.sections.overview.teamPolicy.allowSolo ? '허용' : '불가'}</li>
               </ul>
+              
+              <div>
+                <p className="flex items-center gap-1.5 text-yellow-500 font-bold mb-2">
+                  <AlertTriangle size={16} /> ⚠ 유의사항:
+                </p>
+                <ol className="space-y-1 text-[--text-secondary] text-xs font-mono list-decimal pl-5">
+                  <li>팀 구성 후 변경 불가</li>
+                  <li>팀원 간 역할 분담 권장</li>
+                  <li>제출물은 팀 단위로 평가</li>
+                  <li>부정행위 적발 시 실격</li>
+                  <li>데드라인 이후 팀 변경 불가</li>
+                </ol>
+              </div>
             </div>
-          </div>
           <button
             onClick={() => setShowCautionModal(false)}
             className="w-full bg-[--bg-elevated] border border-[--border] text-[--text-primary] font-mono text-sm py-2 rounded hover:border-[--accent] transition-all"

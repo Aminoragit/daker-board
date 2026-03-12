@@ -78,7 +78,7 @@ export default function HackathonDetailPage() {
       <PageTransition>
         <div className="flex flex-col items-center justify-center py-20 space-y-4">
           <p className="font-mono text-lg text-red-400 font-bold">ERROR 404: EVENT NOT FOUND</p>
-          <p className="font-mono text-xs text-[--text-muted]">slug: {slug}</p>
+          <p className="font-mono text-xs text-[--text-secondary]">slug: {slug}</p>
           <Link href="/hackathons"
             className="border border-[--border] text-[--text-secondary] hover:border-[--border-glow] font-mono text-xs px-4 py-2 rounded transition-all">
             ← BACK TO EVENTS
@@ -108,7 +108,7 @@ export default function HackathonDetailPage() {
         <div className="flex items-center gap-2 flex-wrap">
           <StatusBadge status={meta.status} />
           {meta.tags.map(tag => <TagBadge key={tag} tag={tag} />)}
-          <span className="font-mono text-xs text-[--text-muted]">{slug}</span>
+          <span className="font-mono text-xs text-[--text-secondary]">{slug}</span>
         </div>
 
         <h1 className="font-sans font-bold text-xl sm:text-2xl text-[--text-primary]">

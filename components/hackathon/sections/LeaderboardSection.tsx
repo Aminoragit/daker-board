@@ -44,7 +44,7 @@ export default function LeaderboardSection({ detail }: { detail: HackathonDetail
       <SectionTitle>LEADERBOARD</SectionTitle>
 
       {leaderboard && (
-        <p className="font-mono text-xs text-[--text-muted] mb-2">
+        <p className="font-mono text-xs text-[--text-secondary] mb-2">
           LAST UPDATED: {formatDate(leaderboard.updatedAt)}
         </p>
       )}
@@ -54,25 +54,33 @@ export default function LeaderboardSection({ detail }: { detail: HackathonDetail
       </p>
 
       {isVoteBased && scoreBreakdownConfig && (
-        <div className="flex flex-wrap gap-3 mb-4">
-          <span className="font-mono text-xs text-[--text-muted]">SCORE TYPE: VOTE</span>
-          {scoreBreakdownConfig.map(b => (
-            <span key={b.key} className="font-mono text-xs text-[--text-secondary] bg-[--bg-elevated] border border-[--border] rounded px-2 py-0.5">
-              {b.label} {b.weightPercent}%
-            </span>
-          ))}
+        <div className="bg-[--bg-surface] border border-[--border] rounded-sm p-4 mb-6 mt-4">
+          <p className="font-mono text-xs text-[--text-primary] mb-2 font-bold uppercase tracking-widest">
+            SCORE: {evalSection.scoreDisplay?.label || '투표 점수'}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {scoreBreakdownConfig.map(b => (
+              <span key={b.key} className="font-mono text-[11px] text-[--text-secondary]">
+                [{b.label} {b.weightPercent}%]
+              </span>
+            ))}
+          </div>
         </div>
       )}
 
       {!isVoteBased && evalSection.limits && (
-        <div className="flex flex-wrap gap-3 mb-4">
-          <span className="font-mono text-xs text-[--text-muted]">SCORE TYPE: AUTO</span>
-          <span className="font-mono text-xs text-[--text-secondary] bg-[--bg-elevated] border border-[--border] rounded px-2 py-0.5">
-            Max Runtime: {evalSection.limits.maxRuntimeSec}s
-          </span>
-          <span className="font-mono text-xs text-[--text-secondary] bg-[--bg-elevated] border border-[--border] rounded px-2 py-0.5">
-            Max Submissions/Day: {evalSection.limits.maxSubmissionsPerDay}
-          </span>
+        <div className="bg-[--bg-surface] border border-[--border] rounded-sm p-4 mb-6 mt-4">
+          <p className="font-mono text-xs text-[--text-primary] mb-2 font-bold uppercase tracking-widest">
+            SCORE: 자동 산출 점수
+          </p>
+          <div className="flex flex-col gap-1">
+            <span className="font-mono text-[11px] text-[--text-secondary]">
+              ⏱ 최대 실행시간: {evalSection.limits.maxRuntimeSec}초
+            </span>
+            <span className="font-mono text-[11px] text-[--text-secondary]">
+              📤 일일 최대 제출: {evalSection.limits.maxSubmissionsPerDay}회
+            </span>
+          </div>
         </div>
       )}
 
@@ -80,11 +88,11 @@ export default function LeaderboardSection({ detail }: { detail: HackathonDetail
         <table className="w-full">
           <thead>
             <tr className="border-b border-[--border]">
-              <th className="font-mono text-xs text-[--text-muted] text-left py-2 px-3 uppercase tracking-wider">Rank</th>
-              <th className="font-mono text-xs text-[--text-muted] text-left py-2 px-3 uppercase tracking-wider">Team</th>
-              <th className="font-mono text-xs text-[--text-muted] text-left py-2 px-3 uppercase tracking-wider">Score</th>
-              <th className="font-mono text-xs text-[--text-muted] text-left py-2 px-3 uppercase tracking-wider hidden sm:table-cell">Submitted At</th>
-              <th className="font-mono text-xs text-[--text-muted] text-left py-2 px-3 uppercase tracking-wider">Links</th>
+              <th className="font-mono text-xs text-[--text-secondary] text-left py-2 px-3 uppercase tracking-wider">Rank</th>
+              <th className="font-mono text-xs text-[--text-secondary] text-left py-2 px-3 uppercase tracking-wider">Team</th>
+              <th className="font-mono text-xs text-[--text-secondary] text-left py-2 px-3 uppercase tracking-wider">Score</th>
+              <th className="font-mono text-xs text-[--text-secondary] text-left py-2 px-3 uppercase tracking-wider hidden sm:table-cell">Submitted At</th>
+              <th className="font-mono text-xs text-[--text-secondary] text-left py-2 px-3 uppercase tracking-wider">Links</th>
             </tr>
           </thead>
           <tbody>
@@ -96,7 +104,7 @@ export default function LeaderboardSection({ detail }: { detail: HackathonDetail
                 <td className="font-sans text-sm text-[--text-primary] py-3 px-3 font-bold">
                   {entry.teamName}
                   {isVoteBased && entry.scoreBreakdown && scoreBreakdownConfig && (
-                    <span className="block font-mono text-xs text-[--text-muted] mt-0.5">
+                    <span className="block font-mono text-xs text-[--text-secondary] mt-0.5">
                       {scoreBreakdownConfig.map(b => {
                         const val = entry.scoreBreakdown?.[b.key as keyof typeof entry.scoreBreakdown];
                         return val !== undefined ? `${b.label}: ${val}` : null;
